@@ -1,0 +1,18 @@
+version: '3.2'
+
+services:
+
+  app:
+    image: ghcr.io/mjpinto-stefanini/php81-fpm:latest
+    labels:
+      - traefik.http.routers.gandauth.rule=Host(`gandauth.stefanini.test`)
+    volumes:
+      - ./src:/src
+    environment:
+      - PROJECT_WEBROOT=/src/public
+    
+
+networks:
+  default:
+    external:
+      name: dev-network
