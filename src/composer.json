@@ -10,7 +10,9 @@
         "laravel/framework": "^9.19",
         "laravel/passport": "^11.3",
         "laravel/sanctum": "^3.0",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "laravel/ui": "^4.1",
+        "yajra/laravel-oci8": "^9"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
