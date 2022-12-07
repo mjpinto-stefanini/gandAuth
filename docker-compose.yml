@@ -10,7 +10,8 @@ services:
       - ./src:/src
     environment:
       - PROJECT_WEBROOT=/src/public
-    
+    ports:
+      - '5173:5173'
 
 networks:
   default:
