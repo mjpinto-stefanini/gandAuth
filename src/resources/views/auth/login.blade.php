@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="row-sm row">
                         <div class="d-none d-lg-block text-center bg-primary details col-xl-5 col-lg-6">
-                            <div class="mt-5 pt-4 p-2 pos-absolute" style="width: 90%">
+                            <div class="mt-5 pt-4 p-2 pos-absolute" style="width: 95%">
                                 <img src="{{url('/images/logo-white.png')}}" alt="Logo Hemominas" class="header-brand-img mb-4" />
 
                                 <div class="clearfix"></div>
