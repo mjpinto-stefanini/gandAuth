@@ -50,9 +50,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name'      => ['required', 'string', 'max:255'],
+            'email'     => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            //'cpf'       => ['required', 'string', 'cpf', 'max:11', 'unique:users'],
+            'password'  => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
@@ -64,10 +65,29 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        //dd($this->generateMasp());
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'cpf' => $data['cpf'],
+            'masp' => $this->generateMasp(),
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    /**
+     * Essa é uma função apenas para testes.
+     * TO-DO: É preciso fazer uma integração com o sistema de AD da Hemominas para solicitar
+     * real criação de usuários
+     */
+    private function generateMasp()
+    {
+        $masp = mt_rand(10000000000, 99999999999);
+
+        if (User::maspExists($masp)) {
+           $masp = $this->generateMasp();
+        }
+
+        return $masp;
     }
 }

@@ -20,6 +20,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'cpf',
+        'masp',
         'password',
     ];
 
@@ -45,5 +47,10 @@ class User extends Authenticatable
     public function findForPassport($masp)
     {
         return $this->where('masp', $masp)->first();
+    }
+
+    static public function maspExists($masp) : bool
+    {
+        return User::where('masp', $masp)->exists() ? true : false;
     }
 }

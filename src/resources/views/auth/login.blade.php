@@ -64,7 +64,7 @@
                                             </div>
 
                                             <div>
-                                                Não tem conta? <a href="#"> solicite seu acesso aqui!   </a>
+                                                Não tem conta? <a href="{{ route('register') }}"> solicite seu acesso aqui!   </a>
                                             </div>
                                         </div>
                                     </div>
