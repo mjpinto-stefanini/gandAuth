@@ -41,6 +41,12 @@
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
+
+                                                @if ($errors->any())
+     @foreach ($errors->all() as $error)
+         <div>{{$error}}</div>
+     @endforeach
+ @endif
                                             </div>
 
                                             <div class="text-start form-group">
@@ -53,7 +59,7 @@
                                                 @enderror
                                             </div>
 
-                                            <button type="button" class="btn ripple btn-main-primary btn-main-primary btn-block mt-2 bt btn-primary">
+                                            <button type="submit" class="btn ripple btn-main-primary btn-main-primary btn-block mt-2 bt btn-primary">
                                                 Login
                                             </button>
                                         </form>
