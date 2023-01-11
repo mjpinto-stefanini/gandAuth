@@ -5,13 +5,11 @@ services:
   app:
     image: ghcr.io/mjpinto-stefanini/php81-fpm:latest
     labels:
-      - traefik.http.routers.gandauth.rule=Host(`gandauth.stefanini.test`)
+      - traefik.http.routers.gandauth.rule=Host(`gandauth.hemominas.hom`)
     volumes:
       - ./src:/src
     environment:
       - PROJECT_WEBROOT=/src/public
-    #ports:
-    #  - '5173:5173'
 
 networks:
   default:
