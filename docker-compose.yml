@@ -13,6 +13,18 @@ services:
     #ports:
     #  - '5173:5173'
 
+  database:
+    image: wnameless/oracle-xe-11g-r2
+    labels:
+    - traefik.http.routers.oracle-gandauth.rule=Host(`oracle-gandauth.test`)
+    environment:
+      ORACLE_ALLOW_REMOTE: "true"
+    ports:
+      - "1523:1521"
+      - "5502:5500"
+    networks:
+      - default
+
 networks:
   default:
     external:
