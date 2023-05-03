@@ -13,7 +13,7 @@ services:
     #ports:
     #  - '5173:5173'
 
-  database:
+  oraclegandauth:
     image: wnameless/oracle-xe-11g-r2
     labels:
     - traefik.http.routers.oracle-gandauth.rule=Host(`oracle-gandauth.test`)
