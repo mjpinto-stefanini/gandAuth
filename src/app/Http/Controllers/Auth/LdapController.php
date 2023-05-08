@@ -19,6 +19,17 @@ class LdapController extends Controller
 
             if ($connection->auth()->attempt(env('LDAP_DEFAULT_USERNAME', 'HEMOMINAS'), env('LDAP_DEFAULT_PASSWORD'))) {
                 echo 'Sucesso! Credenciais válidas';
+
+                $query = $connection->query();
+                $record = $query->findByOrFail('samaccountname', '10725331');
+
+                if ($record) {
+                    print_r($record);
+                } else {
+                    echo 'Usuário não encontrado.';
+                }
+
+
             } else {
                 echo 'Erro! Credenciais inválidas';
             }
