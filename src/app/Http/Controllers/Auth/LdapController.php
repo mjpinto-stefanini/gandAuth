@@ -7,6 +7,7 @@ use LdapRecord\Container;
 use LdapRecord\Connection;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Models\Entry;
+use App\Ldap\User;
 
 
 class LdapController extends Controller
@@ -20,11 +21,10 @@ class LdapController extends Controller
             if ($connection->auth()->attempt(env('LDAP_DEFAULT_USERNAME', 'HEMOMINAS'), env('LDAP_DEFAULT_PASSWORD'))) {
                 echo 'Sucesso! Credenciais válidas';
 
-                $query = $connection->query();
-                $record = $query->findByOrFail('samaccountname', '10725331');
+                $user = User::where('sAMAccountname', '=', '10725331')->get();
 
-                if ($record) {
-                    print_r($record);
+                if ($user) {
+                    print_r($user);
                 } else {
                     echo 'Usuário não encontrado.';
                 }
