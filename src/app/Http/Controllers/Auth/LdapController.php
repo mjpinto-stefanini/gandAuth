@@ -13,7 +13,7 @@ class LdapController extends Controller
     public function index()
     {
         try {
-            $username = '03860313x';
+            $username = '03860313';
             $password = '03860313';
 
             $login = $this->validateLdapUser($username, $password);
