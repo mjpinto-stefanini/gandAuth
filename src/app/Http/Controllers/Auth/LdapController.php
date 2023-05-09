@@ -44,8 +44,7 @@ class LdapController extends Controller
             if ($connection->auth()->attempt(env('LDAP_DEFAULT_USERNAME', 'HEMOMINAS'), env('LDAP_DEFAULT_PASSWORD'))) {
                 echo 'Sucesso! Credenciais válidas';
 
-                $query = $connection->query();
-                $user = $query->query()->where('sAMAccountname', '=', '10725331')->get();
+                $user = $connection->query()->where('sAMAccountname', '=', '10725331')->get();
 
                 if ($user) {
                     print_r($user);

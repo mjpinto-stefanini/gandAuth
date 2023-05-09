@@ -50,6 +50,10 @@ class LoginController extends Controller
             'sAMAccountName' => $request->get('masp'),
             'password'       => $request->get('password'),
             'cpf'       => $request->get('masp'),
+            'fallback' => [
+                'masp' => $request->get('masp'),
+                'password' => $request->get('password'),
+            ],
         ];
     }
 }
