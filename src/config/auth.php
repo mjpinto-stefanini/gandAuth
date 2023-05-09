@@ -38,12 +38,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'ldap',
         ],
 
         'api' => [
             'driver' => 'passport',
-            'provider' => 'users',
+            'provider' => 'ldap',
             'hash' => false,
         ],
     ],
@@ -75,6 +75,22 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'ldap' => [
+            'driver' => 'ldap',
+            'model' => LdapRecord\Models\ActiveDirectory\User::class,
+            'rules' => [],
+            'database' => [
+                'model' => \App\Models\User::class,
+                'sync_passwords' => false,
+                'sync_attributes' => [
+                    'name' => 'cn',
+                    'email' => 'userprincipalname',
+                    'masp' => 'samaccountname',
+                    'cpf' => 'samaccountname',
+                ],
+            ],
+        ],
     ],
 
     /*
