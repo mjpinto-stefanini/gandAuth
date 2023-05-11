@@ -56,4 +56,8 @@ class User extends Authenticatable implements LdapAuthenticatable
     {
         return User::where('masp', $masp)->exists() ? true : false;
     }
+
+    public function getKey() {
+        return $this->id;
+    }
 }

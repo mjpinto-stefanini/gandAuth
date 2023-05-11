@@ -10,7 +10,7 @@ class User extends Model
 {
     use CanAuthenticate;
 
-//    protected string $guidKey = 'samaccountname';
+    protected string $guidKey = 'samaccountname';
 
 /**
      * The object classes of the LDAP model.
@@ -21,8 +21,4 @@ class User extends Model
         'organizationalperson',
         'user',
     ];
-
-    public function getKey() {
-        return $this->id;
-    }
 }

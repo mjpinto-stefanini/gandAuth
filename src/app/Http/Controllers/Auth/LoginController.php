@@ -47,13 +47,39 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         return [
-            'sAMAccountName' => $request->get('masp'),
+            'samaccountName' => $request->get('masp'),
             'password'       => $request->get('password'),
-            'cpf'       => $request->get('masp'),
             'fallback' => [
                 'masp' => $request->get('masp'),
                 'password' => $request->get('password'),
             ],
         ];
+    }
+
+    /**
+     * Attempt to authenticate the request's credentials.
+     *
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function authenticate()
+    {
+        $this->ensureIsNotRateLimited();
+
+        $credentials = [
+            'samaccountname' => $this->masp,
+            'password' => $this->password,
+        ];
+
+        if (! Auth::attempt($credentials, $this->filled('remember'))) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
     }
 }
