@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->after('cpf', function ($table) {
-                $table->string('guid', 40);
-                $table->string('domain', 40);
+                $table->string('guid', 40)->nullable();
+                $table->string('domain', 40)->nullable();
             });
         });
     }
