@@ -37,16 +37,18 @@
                                                 <label for="masp" class="form-label">Código masp</label>
                                                 <input type="text" name="masp" id="masp" class="form-control @error('masp') is_invalid @enderror" value="{{old('masp')}}" required autofocus>
                                                 @error('masp')
-                                                    <span class="invalid-feedback" role="alert">
+                                                    <span class="invalid-feedback" role="alert" style="color: red; margin-bottom: 5px; display: inline">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
 
                                                 @if ($errors->any())
-     @foreach ($errors->all() as $error)
-         <div>{{$error}}</div>
-     @endforeach
- @endif
+                                                    @foreach ($errors->all() as $error)
+                                                        <span class="invalid-feedback" role="alert" style="color: red; margin-bottom: 5px; display: inline">
+                                                            <strong>{{$error}}</strong>
+                                                        </span>
+                                                    @endforeach
+                                                @endif
                                             </div>
 
                                             <div class="text-start form-group">

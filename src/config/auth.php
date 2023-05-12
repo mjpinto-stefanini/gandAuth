@@ -46,6 +46,11 @@ return [
             'provider' => 'ldap',
             'hash' => false,
         ],
+
+        'database' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*

@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use LdapRecord\Laravel\Auth\ListensForLdapBindFailure;
+
 
 class LoginController extends Controller
 {
@@ -20,7 +25,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, ListensForLdapBindFailure;
 
     /**
      * Where to redirect users after login.
@@ -47,7 +52,7 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         return [
-            'samaccountName' => $request->get('masp'),
+            'samaccountname' => $request->get('masp'),
             'password'       => $request->get('password'),
             'fallback' => [
                 'masp' => $request->get('masp'),
@@ -56,30 +61,52 @@ class LoginController extends Controller
         ];
     }
 
-    /**
-     * Attempt to authenticate the request's credentials.
-     *
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function authenticate()
-    {
-        $this->ensureIsNotRateLimited();
 
-        $credentials = [
-            'samaccountname' => $this->masp,
-            'password' => $this->password,
+    public function login(Request $request)
+    {
+        $request->validate([
+            'masp' => "required|string",
+            'password' => "required|string"
+        ]);
+
+        $masp = $request->get('masp');
+        $password = $request->get('password');
+
+        $ldapCredentials = [
+            'samaccountname' => $masp,
+            'password' => $password,
         ];
 
-        if (! Auth::attempt($credentials, $this->filled('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        $message = 'Usuário não encontrado';
 
-            throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
-            ]);
+        //Ldap auth
+        if (Auth::guard('web')->attempt($ldapCredentials)) {
+            $user = Auth::user();
+
+            // Returns true:
+            $user instanceof \LdapRecord\Models\Model;
+            return redirect()->intended($this->redirectTo);
+        } else {
+            $message = 'Usuário não autenticado na Rede da Hemominas. Favor verificar';
         }
 
-        RateLimiter::clear($this->throttleKey());
+        //Database auth
+        $user = User::where('masp', $masp)->first();
+
+        if ($user) {
+            if (Hash::check($password, $user->password)) {
+                $request->session()->regenerate();
+                $request->session()->put('user', $user);
+                Auth::login($user);
+
+                return redirect()->intended($this->redirectTo);
+            } else {
+                $message = 'Usuário e/ou senha incorretos';
+            }
+        }
+
+        return back()->withErrors([
+            'masp' => $message,
+        ])->onlyInput('masp');
     }
 }
