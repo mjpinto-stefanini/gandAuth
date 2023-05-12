@@ -87,7 +87,7 @@ class LoginController extends Controller
             $user instanceof \LdapRecord\Models\Model;
             return redirect()->intended($this->redirectTo);
         } else {
-            $message = 'Usuário não autenticado na Rede da Hemominas. Favor verificar';
+            $message = 'Usuário não autenticado na Rede da Hemominas. Favor verificar!';
         }
 
         //Database auth
@@ -101,7 +101,7 @@ class LoginController extends Controller
 
                 return redirect()->intended($this->redirectTo);
             } else {
-                $message = 'Usuário e/ou senha incorretos';
+                $message = 'Usuário e/ou senha incorretos.';
             }
         }
 
