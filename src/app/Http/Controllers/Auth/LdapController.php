@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use LdapRecord\Container;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Models\ActiveDirectory\User;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class LdapController extends Controller
@@ -25,7 +26,7 @@ class LdapController extends Controller
         }
     }
 
-    public function validateLdapUser(string $username, string $password): bool
+    public function validateLdapUserWeb(string $username, string $password): bool
     {
         $connection = Container::getConnection('default');
         $user = User::findByOrFail('samaccountname', $username);
@@ -36,27 +37,88 @@ class LdapController extends Controller
         return false;
     }
 
-    public function searchLdapUser()
+    public function validateLdapUser(Request $request, $masp)
+    {
+        $password = $request->password;
+
+        if ($masp && $password) {
+
+            try {
+                $connection = Container::getConnection('default');
+                $user = User::findByOrFail('samaccountname', $masp);
+
+                if ($connection->auth()->attempt($user->getDn(), $password)) {
+                    return response()->json([
+                        "status" => true,
+                        "message" => "User credentials are valid"
+                    ], 200);
+                }
+                return response()->json([
+                    "status" => false,
+                    "message" => "Credentials are not valid"
+                ], 404);
+
+            } catch (Exception|LdapRecordException $e) {
+                return response()->json([
+                    "status" => false,
+                    'message' => $e->getMessage(),
+                ], 400);
+            }
+
+        } else {
+            return response()->json([
+                "status" => false,
+                "message" => "Bad request"
+            ], 400);
+        }
+    }
+
+    public function searchLdapUser(string $masp)
     {
         try {
             $connection = Container::getConnection('default');
 
             if ($connection->auth()->attempt(env('LDAP_DEFAULT_USERNAME', 'HEMOMINAS'), env('LDAP_DEFAULT_PASSWORD'))) {
-                echo 'Sucesso! Credenciais válidas';
 
-                $user = $connection->query()->where('sAMAccountname', '=', '10725331')->get();
+                $user = $connection->query()->where('samaccountname', '=', $masp)->get();
 
-                if ($user) {
-                    print_r($user);
-                } else {
-                    echo 'Usuário não encontrado.';
+                if(!$user) {
+                    return response()->json([
+                        "status" => false,
+                        'message'   => 'Record not found',
+                    ], 404);
                 }
+
+                try {
+                    $ldapuser = $user[0];
+
+                    return response()->json([
+                        "status" => true,
+                        "message"   => "User found",
+                        "name" => $ldapuser['cn'][0],
+                        "email" => $ldapuser['userprincipalname'][0],
+                        "masp" => $ldapuser['samaccountname'][0],
+                    ], 200);
+                } catch (Exception $e) {
+                    return response()->json([
+                        "status" => false,
+                        'message'   => $e->getMessage(),
+                    ], 400);
+                }
+
             } else {
-                echo 'Erro! Credenciais inválidas';
+                return response()->json([
+                    "status" => false,
+                    'message'   => 'Invalid search credentials',
+                ], 404);
             }
 
         } catch (Exception|LdapRecordException $e) {
-            echo 'Exceção capturada: ',  $e->getMessage(), "\n";
+
+            return response()->json([
+                "status" => false,
+                'message'   => $e->getMessage(),
+            ], 400);
         }
     }
 }

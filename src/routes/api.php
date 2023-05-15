@@ -20,3 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
     return User::find($request->user()->id);
 });
+
+Route::get('/ldapuser/{masp}', [\App\Http\Controllers\Auth\LdapController::class, 'searchLdapUser'])->name('searchldapuser');
+
+Route::post('/ldapuser/{masp}', [\App\Http\Controllers\Auth\LdapController::class, 'validateLdapUser'])->name('validateldapuser');
+
