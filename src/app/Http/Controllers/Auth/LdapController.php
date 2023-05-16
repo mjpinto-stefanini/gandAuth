@@ -3,29 +3,31 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use LdapRecord\Auth\PasswordRequiredException;
+use LdapRecord\Auth\UsernameRequiredException;
 use LdapRecord\Container;
+use LdapRecord\ContainerException;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Models\ActiveDirectory\User;
+use LdapRecord\Query\ObjectNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
+use \Illuminate\Http\JsonResponse;
 
 
 class LdapController extends Controller
 {
-    public function index()
-    {
-        try {
-            $username = '03860313';
-            $password = '03860313';
 
-            $login = $this->validateLdapUser($username, $password);
-
-            var_dump($login);
-
-        } catch (Exception|LdapRecordException $e) {
-            echo 'Exceção capturada: ', $e->getMessage(), "\n";
-        }
-    }
-
+    /**
+     * Valida Usuário AD retornando true ou false
+     *
+     * @param string $username
+     * @param string $password
+     * @return bool
+     * @throws PasswordRequiredException
+     * @throws UsernameRequiredException
+     * @throws ContainerException
+     * @throws ObjectNotFoundException
+     */
     public function validateLdapUserWeb(string $username, string $password): bool
     {
         $connection = Container::getConnection('default');
@@ -37,7 +39,14 @@ class LdapController extends Controller
         return false;
     }
 
-    public function validateLdapUser(Request $request, $masp)
+    /**
+     * Valida Usuário AD através de usuário (masp) e senha
+     *
+     * @param Request $request
+     * @param $masp
+     * @return JsonResponse
+     */
+    public function validateLdapUser(Request $request, $masp): JsonResponse
     {
         $password = $request->password;
 
@@ -73,7 +82,13 @@ class LdapController extends Controller
         }
     }
 
-    public function searchLdapUser(string $masp)
+    /**
+     * Retorna informações de usuário AD
+     *
+     * @param string $masp
+     * @return JsonResponse
+     */
+    public function searchLdapUser(string $masp): JsonResponse
     {
         try {
             $connection = Container::getConnection('default');

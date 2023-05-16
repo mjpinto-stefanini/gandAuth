@@ -23,8 +23,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/ldap', [\App\Http\Controllers\Auth\LdapController::class, 'index'])->name('ldap');
-
 Route::get('/logout', function () {
     Session::flush();
     Auth::logout();
