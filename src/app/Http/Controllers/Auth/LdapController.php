@@ -107,11 +107,19 @@ class LdapController extends Controller
                 try {
                     $ldapuser = $user[0];
 
+                    if (isset($ldapuser['mail'][0])) {
+                        $mail = $ldapuser['mail'][0];
+                    } else if (isset($ldapuser['userprincipalname'][0])) {
+                        $mail = $ldapuser['userprincipalname'][0];
+                    } else {
+                        $mail = 'naocadastrado@hemominas.mg.gov.br';
+                    }
+
                     return response()->json([
                         "status" => true,
                         "message"   => "User found",
                         "name" => $ldapuser['cn'][0],
-                        "email" => $ldapuser['userprincipalname'][0],
+                        "email" => $mail,
                         "masp" => $ldapuser['samaccountname'][0],
                     ], 200);
                 } catch (Exception $e) {
