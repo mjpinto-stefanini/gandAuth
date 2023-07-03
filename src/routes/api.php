@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +17,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    //return $request->user();
-
     return User::find($request->user()->id);
+});
+
+Route::middleware(' auth:api')->get('/logout', function (Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    $token = $request->user()->token();
+    $token->revoke();
+    return response(["Usuário deslogado!"], 200);
 });
 
 Route::get('/ldapuser/{masp}', [\App\Http\Controllers\Auth\LdapController::class, 'searchLdapUser'])->name('searchldapuser');
