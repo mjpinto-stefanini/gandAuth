@@ -109,4 +109,19 @@ class LoginController extends Controller
             'masp' => $message,
         ])->onlyInput('masp');
     }
+
+    /**
+     * Recebe logout do client
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function logout(Request $request) {
+        Auth::logout();
+
+        //TODO verificar o logout de todos so clients - verificado com o Miniarmazem
+        return redirect('/home');
+    }
+
 }

@@ -23,9 +23,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/logout', function () {
-    Session::flush();
-    Auth::logout();
-
-    return redirect('login');
-});
+Route::get('/logout', [LoginController::class, 'logout']);
