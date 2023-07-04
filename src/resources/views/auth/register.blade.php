@@ -26,7 +26,7 @@
                                     <div class="mt-2 mb-2 card-body">
                                         <img src="{{url('/images/logo.png')}}" alt="Logo Hemominas" class="d-lg-none header-brand-img.text-start" />
                                         <div class="clearfix"></div>
-                                        <form method="POST" action="{{ route('register') }}">   
+                                        <form method="POST" action="{{ route('register') }}">
                                             @csrf
                                             <h5 class="text-start mb-2">Login de acesso</h5>
                                             <p class="mb-4 text-muted tx-13 ms-0 text-start">
@@ -83,15 +83,15 @@
                                             </button>
                                         </form>
 
-                                        <div class="text-start mt-5 ms-0">
-                                            <div class="mb-1">
-                                                <a href="#">Esqueceu a senha?</a>
-                                            </div>
+{{--                                        <div class="text-start mt-5 ms-0">--}}
+{{--                                            <div class="mb-1">--}}
+{{--                                                <a href="#">Esqueceu a senha?</a>--}}
+{{--                                            </div>--}}
 
-                                            <div>
-                                                Não tem conta? <a href="{{ route('register') }}"> solicite seu acesso aqui!   </a>
-                                            </div>
-                                        </div>
+{{--                                            <div>--}}
+{{--                                                Não tem conta? <a href="{{ route('register') }}"> solicite seu acesso aqui!   </a>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
                                     </div>
                                 </div>
                             </div>

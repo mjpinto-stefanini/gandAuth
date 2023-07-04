@@ -66,15 +66,15 @@
                                             </button>
                                         </form>
 
-                                        <div class="text-start mt-5 ms-0">
-                                            <div class="mb-1">
-                                                <a href="#">Esqueceu a senha?</a>
-                                            </div>
+{{--                                        <div class="text-start mt-5 ms-0">--}}
+{{--                                            <div class="mb-1">--}}
+{{--                                                <a href="#">Esqueceu a senha?</a>--}}
+{{--                                            </div>--}}
 
-                                            <div>
-                                                Não tem conta? <a href="{{ route('register') }}"> solicite seu acesso aqui!   </a>
-                                            </div>
-                                        </div>
+{{--                                            <div>--}}
+{{--                                                Não tem conta? <a href="{{ route('register') }}"> solicite seu acesso aqui!   </a>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
                                     </div>
                                 </div>
                             </div>
