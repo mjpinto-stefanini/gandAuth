@@ -119,8 +119,13 @@ class LoginController extends Controller
      */
     public function logout(Request $request) {
         Auth::logout();
+        $redirectUrl = $request->redirect_url ?: null;
 
         //TODO verificar o logout de todos so clients - verificado com o Miniarmazem
+        // Redireciona para o client que pediu o logout
+        if ($redirectUrl)
+            return redirect($redirectUrl);
+
         return redirect('/home');
     }
 
