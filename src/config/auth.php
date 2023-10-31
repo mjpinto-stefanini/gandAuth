@@ -88,12 +88,7 @@ return [
             'database' => [
                 'model' => \App\Models\User::class,
                 'sync_passwords' => false,
-                'sync_attributes' => [
-                    'name' => 'cn',
-                    'email' => 'userprincipalname',
-                    'masp' => 'samaccountname',
-                    'cpf' => 'samaccountname',
-                ],
+                'sync_attributes' => \App\Ldap\LdapAttributeHandler::class,
             ],
         ],
     ],
